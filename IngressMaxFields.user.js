@@ -21,32 +21,78 @@
     }
     // base context for plugin
     window.plugin.ingressmaxfield = function() {};
-  var self = window.plugin.ingressmaxfield;
-	    // custom dialog wrapper with more flexibility
-    self.gen = function gen() {
-	var o = [];
-	for (var x in window.portals) {
-	  var p = window.portals[x];
-	  if(map.getBounds().contains(p.getLatLng()))
-	  {
-		  var href = 'https://www.ingress.com/intel?ll='+p._latlng.lat+','+p._latlng.lng+'&z=17&pll='+p._latlng.lat+','+p._latlng.lng;
-		  var str1=p.options.data.title.replace(/\"/g, "\\\"");
-		  var str2=str1.replace(',',' ');
-		  o.push( str2 + "," + href);
-	  }
+    var self = window.plugin.ingressmaxfield;
+    // custom dialog wrapper with more flexibility
+
+    self.portalInScreen = function portalInScreen( p ) {
+        return map.getBounds().contains(p.getLatLng())
     }
-    var dialog = window.dialog({
-	    title: "www.ingress-maxfield.com: CSV export",
-    // body must be wrapped in an outer tag (e.g. <div>content</div>)
-    html: '<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>'
-    + '<textarea id="imfCSVExport" rows="30" style="width: 100%;"></textarea>'
-    }).parent();
-    $(".ui-dialog-buttonpane", dialog).remove();
-    dialog.css("width", "600px")
-    .css("top", ($(window).height() - dialog.height()) / 2)
-    .css("left", ($(window).width() - dialog.width()) / 2);
-    $("#imfCSVExport").val(o.join("\n"));
-    return dialog;
+
+    //  adapted from
+    //+ Jonas Raoni Soares Silva
+    //@ http://jsfromhell.com/math/is-point-in-poly [rev. #0]
+    self.portalInPolygon = function portalInPolygon( polygon, portal ) {
+      var poly = polygon.getLatLngs();
+      var pt = portal.getLatLng();
+
+      for(var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i) {
+        ((poly[i].lat <= pt.lat && pt.lat < poly[j].lat) || (poly[j].lat <= pt.lat && pt.lat < poly[i].lat))
+          && (pt.lng < (poly[j].lng - poly[i].lng) * (pt.lat - poly[i].lat) / (poly[j].lat - poly[i].lat) + poly[i].lng)
+          && (c = !c);
+      }
+      return c;
+    }
+
+    // return if the portal is within the drawtool objects.
+    // Polygon and circles are available, and circles are implemented
+    // as round polygons.
+    self.portalInDrawnItems = function ( portal ) {
+      var c = false;
+
+      window.plugin.drawTools.drawnItems.eachLayer( function( layer ) {
+        if ( self.portalInPolygon( layer, portal ) ) {
+          c = true;
+        }
+      });
+      return c;
+    }
+
+    self.gen = function gen() {
+        var o = [];
+
+        if ( window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length ) {
+          var inBounds = function( portal ) {
+            return self.portalInDrawnItems( portal );
+          }
+          var string = "Portal selection based on drawTools boundaties.";
+        } else {
+          var inBounds = function( portal ) {
+            return self.portalInScreen( portal );
+          }
+          var string = "Portal selection based on screen boundaries.";
+        }
+
+        for (var x in window.portals) {
+            var p = window.portals[x];
+            if ( inBounds( p ) ) {
+              var href = 'https://www.ingress.com/intel?ll='+p._latlng.lat+','+p._latlng.lng+'&z=17&pll='+p._latlng.lat+','+p._latlng.lng;
+              var str1=p.options.data.title.replace(/\"/g, "\\\"");
+              var str2=str1.replace(',',' ');
+              o.push( str2 + "," + href);
+            }
+        }
+        var dialog = window.dialog({
+            title: "www.ingress-maxfield.com: CSV export",
+            // body must be wrapped in an outer tag (e.g. <div>content</div>)
+            html: '<span>Save the data in a textfile or post it on ingress-maxfields.com. ' + string + '</span>'
+                + '<textarea id="imfCSVExport" rows="30" style="width: 100%;"></textarea>'
+        }).parent();
+        $(".ui-dialog-buttonpane", dialog).remove();
+        dialog.css("width", "600px")
+            .css("top", ($(window).height() - dialog.height()) / 2)
+            .css("left", ($(window).width() - dialog.width()) / 2);
+        $("#imfCSVExport").val(o.join("\n"));
+        return dialog;
     }
     // setup function called by IITC
     self.setup = function init() {
