@@ -2,7 +2,7 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.0.0.5
+// @version 0.0.0.6
 // @namespace https://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL https://github.com/wyldphyr3/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL https://github.com/wyldphyr3/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
@@ -98,7 +98,8 @@ function wrapper() {
 							+ ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat
 							+ ',' + p._latlng.lng;
 					var str1 = p.options.data.title.replace(/\"/g, "\\\"");
-					o.push(str1 + ";" + href);
+					var str2 = str1.replace(';', ' ');
+					o.push(str2 + ";" + href);
 				}
 			}
 			else
