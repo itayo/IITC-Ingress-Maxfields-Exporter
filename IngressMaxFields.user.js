@@ -2,10 +2,10 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.0.0.4
+// @version 0.0.0.5
 // @namespace https://github.com/jonatkins/ingress-intel-total-conversion
-// @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
-// @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
+// @updateURL https://github.com/wyldphyr3/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
+// @downloadURL https://github.com/wyldphyr3/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @description Exports portals in the format for http://www.ingress-maxfield.com/
 // @include https://www.ingress.com/intel*
 // @include http://www.ingress.com/intel*
@@ -98,8 +98,7 @@ function wrapper() {
 							+ ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat
 							+ ',' + p._latlng.lng;
 					var str1 = p.options.data.title.replace(/\"/g, "\\\"");
-					var str2 = str1.replace(',', ' ');
-					o.push(str2 + "," + href);
+					o.push(str2 + ";" + href);
 				}
 			}
 			else
