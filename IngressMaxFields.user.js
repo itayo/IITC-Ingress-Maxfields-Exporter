@@ -98,7 +98,7 @@ function wrapper() {
 							+ ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat
 							+ ',' + p._latlng.lng;
 					var str1 = p.options.data.title.replace(/\"/g, "\\\"");
-					o.push(str2 + ";" + href);
+					o.push(str1 + ";" + href);
 				}
 			}
 			else
