@@ -99,7 +99,15 @@ function wrapper() {
 							+ ',' + p._latlng.lng;
 					var str1 = p.options.data.title.replace(/\"/g, "\\\"");
 					var str2 = str1.replace(';', ' ');
-					o.push(str2 + ";" + href);
+					
+					//check for keys plugin
+					if(window.plugin.keys) {
+                				var keyCount = window.plugin.keys.keys[x] || 0;
+                				o.push(str2 + ";" + href + ";" + keyCount);
+                			}
+                			else {
+                				o.push(str2 + ";" + href);
+                			}
 				}
 			}
 			else
