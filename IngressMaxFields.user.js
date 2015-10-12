@@ -80,7 +80,7 @@ function wrapper() {
 			var inBounds = function( portal ) {
 				return self.portalInDrawnItems( portal );
 			}
-			var string = "Portal selection based on drawTools boundaties.";
+			var string = "Portal selection based on drawTools boundaries.";
 		} else {
 			var inBounds = function( portal ) {
 				return self.portalInScreen( portal );
