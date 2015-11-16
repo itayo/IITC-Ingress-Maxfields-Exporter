@@ -2,11 +2,11 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.1.2.0
-// @namespace https://github.com/jonatkins/ingress-intel-total-conversion
-// @updateURL https://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
-// @downloadURL https://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
-// @description Exports portals in the format for http://www.ingress-maxfield.com/
+// @version 0.1.4.0
+// @namespace http://github.com/jonatkins/ingress-intel-total-conversion
+// @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
+// @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
+// @description Exports portals in the format for http://www.ingress-maxfield.com/ and allow direct transfer to site
 // @include https://www.ingress.com/intel*
 // @include http://www.ingress.com/intel*
 // @match https://www.ingress.com/intel*
@@ -80,7 +80,7 @@ function wrapper() {
 			var inBounds = function( portal ) {
 				return self.portalInDrawnItems( portal );
 			}
-			var string = "Portal selection based on drawTools boundaties.";
+			var string = "Portal selection based on drawTools boundaries.";
 		} else {
 			var inBounds = function( portal ) {
 				return self.portalInScreen( portal );
@@ -122,17 +122,17 @@ function wrapper() {
 		var dialog = window
 				.dialog(
 						{
-							title : "www.ingress-maxfield.com: CSV export",
+							title : "www.ingress-maxfield.com: Field your future",
 							// body must be wrapped in an outer tag (e.g.
 							// <div>content</div>)
 							html: '<span>Save the data in a textfile or post it on ingress-maxfields.com. ' + string + '</span>'
-									+ '<textarea id="imfCSVExport" rows="30" style="width: 100%;"></textarea>'
+									+ '<form name="maxfield" action="http://ingress-maxfield.com/submit.php" enctype="multipart/form-data" method="post" target="_blank_"><textarea name="portal_list_area" id="upload" rows="30" style="width: 100%;"></textarea><p>Number of agents:<input type="number" class="num_agents" name="num_agents" value="1" min="1" required></p><p>Use Google maps<input type="checkbox" name="useGoogle" value="YES" checked><input type="hidden" name="email" placeholder="(optional)"></p><p><input type="submit" class="submit" name="submit" value="Submit!"></p></form>'
 						}).parent();
 		$(".ui-dialog-buttonpane", dialog).remove();
 		dialog.css("width", "600px").css("top",
 				($(window).height() - dialog.height()) / 2).css("left",
 				($(window).width() - dialog.width()) / 2);
-		$("#imfCSVExport").val(o.join("\n"));
+		$("#upload").val(o.join("\n"));
 		if ( tooMany == 1) {
 			alert("Too many portals visible, only showing 50!");
 		}
