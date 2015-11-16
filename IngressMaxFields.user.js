@@ -2,11 +2,11 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.1.2.0
-// @namespace https://github.com/jonatkins/ingress-intel-total-conversion
-// @updateURL https://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
-// @downloadURL https://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
-// @description Exports portals in the format for http://www.ingress-maxfield.com/
+// @version 0.1.4.0
+// @namespace http://github.com/jonatkins/ingress-intel-total-conversion
+// @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
+// @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
+// @description Exports portals in the format for http://www.ingress-maxfield.com/ and allow direct transfer to site
 // @include https://www.ingress.com/intel*
 // @include http://www.ingress.com/intel*
 // @match https://www.ingress.com/intel*
