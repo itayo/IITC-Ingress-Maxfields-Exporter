@@ -64,6 +64,10 @@ function wrapper() {
 		var c = false;
 
 		window.plugin.drawTools.drawnItems.eachLayer( function( layer ) {
+			if (!(layer instanceof L.GeodesicPolygon || layer instanceof L.Rectangle || layer instanceof L.GeodesicCircle || layer instanceof L.Circle)) {
+				return false;
+			}
+
 			if ( self.portalInPolygon( layer, portal ) ) {
 				c = true;
 			}
