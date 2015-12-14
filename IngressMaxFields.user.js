@@ -74,17 +74,12 @@ function wrapper() {
 			var o = [];
 			var antal = 0;
 			var tooMany = 0;
-
-			if (window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length) {
-				var inBounds = function(portal) {
+			var inBounds = function(portal) {
+				if (window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length) {
 					return self.portalInDrawnItems(portal);
-				}
-				var string = "Portal selection based on drawTools boundaries.";
-			} else {
-				var inBounds = function(portal) {
+				} else {
 					return self.portalInScreen(portal);
 				}
-				var string = "Portal selection based on screen boundaries.";
 			}
 
 			for (var x in window.portals) {
