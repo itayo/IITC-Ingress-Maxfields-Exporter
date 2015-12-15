@@ -73,7 +73,7 @@ function wrapper() {
 	self.gen = function gen() {
 			var o = [];
 			var antal = 0;
-			var tooMany = 0;
+			var tooMany = false;
 			var inBounds = function(portal) {
 				if (window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length) {
 					return self.portalInDrawnItems(portal);
@@ -100,8 +100,8 @@ function wrapper() {
 						}
 					}
 				} else {
-					if (tooMany == 0) {
-						tooMany = 1;
+					if (!tooMany) {
+						tooMany = true;
 					}
 				}
 			}
@@ -118,7 +118,7 @@ function wrapper() {
 				($(window).height() - dialog.height()) / 2).css("left",
 				($(window).width() - dialog.width()) / 2);
 			$("#upload").val(o.join("\n"));
-			if (tooMany == 1) {
+			if (tooMany) {
 				alert("Too many portals visible, only showing 50!");
 			}
 			return dialog;
