@@ -97,11 +97,13 @@ function wrapper() {
 			if (typeof portals[x] !== 'undefined') {
 				if(count < 50) {
 					var str= self.genStr();
+					list.push(str);
 				} else {
 					if (! tooMany ) {
 						tooMany=true;
 					}
 				}
+			}
 		}
 		return { list: list, tooMany : tooMany };
 
