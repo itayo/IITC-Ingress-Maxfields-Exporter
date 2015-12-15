@@ -83,25 +83,28 @@ function wrapper() {
 			}
 
 			for (var x in window.portals) {
+				if(typeof x !== 'undefined')
+				{
 				var p = window.portals[x];
 				if (antal < 50) {
 					if (inBounds(p)) {
-						antal = antal + 1;
-						var href = 'https://www.ingress.com/intel?ll=' + p._latlng.lat + ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat + ',' + p._latlng.lng;
-						var str1 = p.options.data.title.replace(/\"/g, "\\\"");
-						var str2 = str1.replace(';', ' ');
+							antal = antal + 1;
+							var href = 'https://www.ingress.com/intel?ll=' + p._latlng.lat + ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat + ',' + p._latlng.lng;
+							var str1 = p.options.data.title.replace(/\"/g, "\\\"");
+							var str2 = str1.replace(';', ' ');
 
 						//check for keys plugin
-						if (window.plugin.keys) {
-							var keyCount = window.plugin.keys.keys[x] || 0;
-							o.push(str2 + ";" + href + ";" + keyCount);
-						} else {
-							o.push(str2 + ";" + href);
+							if (window.plugin.keys) {
+								var keyCount = window.plugin.keys.keys[x] || 0;
+								o.push(str2 + ";" + href + ";" + keyCount);
+							} else {
+								o.push(str2 + ";" + href);
+							}
 						}
-					}
-				} else {
-					if (!tooMany) {
-						tooMany = true;
+					} else {
+						if (!tooMany) {
+							tooMany = true;
+						}
 					}
 				}
 			}
