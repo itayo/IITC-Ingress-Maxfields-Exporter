@@ -93,7 +93,7 @@ function wrapper() {
 	self.checkPortals= function checkPortals(portals) {
 		var count=0;
 		var tooMany=false;
-		var list;
+		var list =[];
 		for (var x in portals) {
 			if (typeof window.portals[x] !== 'undefined') {
 				if(count < 50 && self.inBounds(window.portals[x])) {
