@@ -79,8 +79,8 @@ function wrapper() {
 	self.genStr = function genStr(p) {
 		var href = 'https://www.ingress.com/intel?ll=' + p._latlng.lat + ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat + ',' + p._latlng.lng;
 		var str = p.options.data.title
-		var str = str.replace(/\"/g, "\\\"");
-		var str = str.replace(';',' ');
+		str = str.replace(/\"/g, "\\\"");
+		str = str.replace(';',' ');
 		if (window.plugin.keys) {
 			var keyCount = window.plugin.keys.keys[x] || 0;
 			str = str + ";" +href +";" + keyCount;
