@@ -2,7 +2,7 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.1.4.4
+// @version 0.1.4.4rc1
 // @namespace http://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
@@ -96,9 +96,10 @@ function wrapper() {
 		var list;
 		for (var x in portals) {
 			if (typeof window.portals[x] !== 'undefined') {
-				if(count < 50) {
+				if(count < 50 && self.inBounds(window.portals[x])) {
 					var str= self.genStr(window.portals[x]);
 					list.push(str);
+					count=count + 1;
 				} else {
 					if (! tooMany ) {
 						tooMany=true;
