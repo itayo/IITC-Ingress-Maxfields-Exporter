@@ -2,7 +2,7 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.1.4.4rc1
+// @version 0.1.4.4
 // @namespace http://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
@@ -93,13 +93,16 @@ function wrapper() {
 	self.checkPortals= function checkPortals(portals) {
 		var count=0;
 		var tooMany=false;
-		var list =[];
+		var list=[];
 		for (var x in portals) {
 			if (typeof window.portals[x] !== 'undefined') {
-				if(count < 50 && self.inBounds(window.portals[x])) {
-					var str= self.genStr(window.portals[x]);
-					list.push(str);
-					count=count + 1;
+				if(count < 50) {
+                    if(self.inBounds(window.portals[x]))
+                    {
+                        var str= self.genStr(window.portals[x]);
+                        list.push(str);
+                        count=count + 1;
+                    }
 				} else {
 					if (! tooMany ) {
 						tooMany=true;
@@ -115,7 +118,7 @@ function wrapper() {
 	{
 		var data = '<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>';
 		data = data + '<form name="maxfield" action="http://ingress-maxfield.com/submit.php" enctype="multipart/form-data" method="post" target="_blank">'
-		data = data + '<textarea name="portal_list_area" id="upload" rows="30" style="width: 100%;"></textarea>';
+		data = data + '<textarea name="portal_list_area" id="upload" rows="30" style="width: 100%;">' + o.join("\n") + '</textarea>';
 		data = data + '<p>Number of agents:<input type="number" class="num_agents" name="num_agents" value="1" min="1" required></p>';
 		data = data + '<p>Use Google maps<input type="checkbox" name="useGoogle" value="YES" checked>';
 		data = data + '<input type="hidden" name="email" placeholder="(optional)"></p><p><input type="submit" class="submit" name="submit" value="Submit!">';
@@ -126,10 +129,9 @@ function wrapper() {
 					html: data
 				}).parent();
 			$(".ui-dialog-buttonpane", dialog).remove();
-			dialog.css("width", "600px").css("top",
+			dia.css("width", "600px").css("top",
 				($(window).height() - dialog.height()) / 2).css("left",
 				($(window).width() - dialog.width()) / 2);
-			$("#upload").val(o.join("\n"));
 			if (tooMany) {
 				alert("Too many portals visible, only showing 50!");
 			}
@@ -164,3 +166,4 @@ var script = document.createElement("script");
 script.appendChild(document.createTextNode("(" + wrapper + ")();"));
 (document.body || document.head || document.documentElement)
 .appendChild(script);
+
