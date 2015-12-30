@@ -95,7 +95,7 @@ function wrapper() {
 		var tooMany=false;
 		var list=[];
 		for (var x in portals) {
-			if (typeof window.portals[x] !== 'undefined') {
+			if (typeof window.portals[x] !== "undefined") {
 				if(count < 50) {
                     if(self.inBounds(window.portals[x]))
                     {
