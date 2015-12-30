@@ -76,12 +76,12 @@ function wrapper() {
 			return self.portalInScreen(portal);
 		}
 	}
-	self.genStr = function genStr(p) {
+	self.genStr = function genStr(p,x) {
 		var href = 'https://www.ingress.com/intel?ll=' + p._latlng.lat + ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat + ',' + p._latlng.lng;
 		var str = p.options.data.title;
 		str = str.replace(/\"/g, "\\\"");
 		str = str.replace(';',' ');
-		if (window.plugin.keys) {
+		if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
 			var keyCount = window.plugin.keys.keys[x] || 0;
 			str = str + ";" +href +";" + keyCount;
 		} else {
@@ -99,7 +99,7 @@ function wrapper() {
 				if(count < 50) {
                     if(self.inBounds(window.portals[x]))
                     {
-                        var str= self.genStr(window.portals[x]);
+                        var str= self.genStr(window.portals[x],x);
                         list.push(str);
                         count=count + 1;
                     }
