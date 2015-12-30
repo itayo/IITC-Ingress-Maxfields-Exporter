@@ -130,8 +130,8 @@ function wrapper() {
 				}).parent();
 			$(".ui-dialog-buttonpane", dialog).remove();
 			dia.css("width", "600px").css("top",
-				($(window).height() - dialog.height()) / 2).css("left",
-				($(window).width() - dialog.width()) / 2);
+				($(window).height() - dia.height()) / 2).css("left",
+				($(window).width() - dia.width()) / 2);
 			if (tooMany) {
 				alert("Too many portals visible, only showing 50!");
 			}
