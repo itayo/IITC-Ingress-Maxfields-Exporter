@@ -25,7 +25,7 @@ function wrapper() {
 	// custom dialog wrapper with more flexibility
 	self.tooManyWait = function tooManyWait() {
 		alert("Too many portals found, only listing 50");
-	}
+	};
 	self.sleep = function sleep(milliseconds) {
 		var start = new Date().getTime();
 		for (var i = 0; i < 1e7; i++) {
@@ -33,11 +33,11 @@ function wrapper() {
 				break;
 			}
 		}
-	}
+	};
 
 	self.portalInScreen = function portalInScreen(p) {
-		return map.getBounds().contains(p.getLatLng())
-	}
+		return map.getBounds().contains(p.getLatLng());
+	};
 
 	//  adapted from
 	//+ Jonas Raoni Soares Silva
@@ -50,7 +50,7 @@ function wrapper() {
 			((poly[i].lat <= pt.lat && pt.lat < poly[j].lat) || (poly[j].lat <= pt.lat && pt.lat < poly[i].lat)) && (pt.lng < (poly[j].lng - poly[i].lng) * (pt.lat - poly[i].lat) / (poly[j].lat - poly[i].lat) + poly[i].lng) && (c = !c);
 		}
 		return c;
-	}
+	};
 
 	// return if the portal is within the drawtool objects.
 	// Polygon and circles are available, and circles are implemented
@@ -78,7 +78,7 @@ function wrapper() {
 	}
 	self.genStr = function genStr(p) {
 		var href = 'https://www.ingress.com/intel?ll=' + p._latlng.lat + ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat + ',' + p._latlng.lng;
-		var str = p.options.data.title
+		var str = p.options.data.title;
 		str = str.replace(/\"/g, "\\\"");
 		str = str.replace(';',' ');
 		if (window.plugin.keys) {
@@ -122,7 +122,7 @@ function wrapper() {
 		data = data + '<p>Number of agents:<input type="number" class="num_agents" name="num_agents" value="1" min="1" required></p>';
 		data = data + '<p>Use Google maps<input type="checkbox" name="useGoogle" value="YES" checked>';
 		data = data + '<input type="hidden" name="email" placeholder="(optional)"></p><p><input type="submit" class="submit" name="submit" value="Submit!">';
-		data = data + '</p></form>'
+		data = data + '</p></form>';
 		var dia = window
 			.dialog({
 				title: "www.ingress-maxfield.com: Field your future",
