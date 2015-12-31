@@ -79,10 +79,10 @@ function wrapper() {
 		}
 	}
 	self.genStr = function genStr(p,x) {
-		var href = 'https://www.ingress.com/intel?ll=' + p._latlng.lat + ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat + ',' + p._latlng.lng;
+		var href = "https://www.ingress.com/intel?ll=" + p._latlng.lat + "," + p._latlng.lng + "&z=17&pll=" + p._latlng.lat + "," + p._latlng.lng;
 		var str = p.options.data.title;
 		str = str.replace(/\"/g, "\\\"");
-		str = str.replace(';',' ');
+		str = str.replace(";"," ");
 		if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
 			var keyCount = window.plugin.keys.keys[x] || 0;
 			str = str + ";" +href +";" + keyCount;
@@ -105,26 +105,23 @@ function wrapper() {
                         list.push(str);
                         count=count + 1;
                     }
-				} else {
-					if (! tooMany ) {
-						tooMany=true;
-					}
 				}
 			}
 		}
+		tooMany = count < 50?false:true;
 		return { list: list, tooMany : tooMany };
 
 
 	}
 	self.showDialog = function showDialog(o,tooMany)
 	{
-		var data = '<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>';
-		data = data + '<form name="maxfield" action="http://ingress-maxfield.com/submit.php" enctype="multipart/form-data" method="post" target="_blank">'
-		data = data + '<textarea name="portal_list_area" id="upload" rows="30" style="width: 100%;">' + o.join("\n") + '</textarea>';
-		data = data + '<p>Number of agents:<input type="number" class="num_agents" name="num_agents" value="1" min="1" required></p>';
-		data = data + '<p>Use Google maps<input type="checkbox" name="useGoogle" value="YES" checked>';
-		data = data + '<input type="hidden" name="email" placeholder="(optional)"></p><p><input type="submit" class="submit" name="submit" value="Submit!">';
-		data = data + '</p></form>';
+		var data = "<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>";
+		data = data + "<form name=\"maxfield\" action=\"http://ingress-maxfield.com/submit.php\" enctype=\"multipart/form-data\" method=\"post\" target=\"_blank\">";
+		data = data + "<textarea name=\"portal_list_area\" id=\"upload\" rows=\"30\" style=\"width: 100%;\">" + o.join("\n") + "</textarea>";
+		data = data + "<p>Number of agents:<input type=\"number\" class=\"num_agents\" name=\"num_agents\" value=\"1\" min=\"1\" required></p>";
+		data = data + "<p>Use Google maps<input type=\"checkbox\" name=\"useGoogle\" value=\"YES\" checked>";
+		data = data + "<input type=\"hidden\" name=\"email\" placeholder=\"(optional)\"></p><p><input type=\"submit\" class=\"submit\" name=\"submit\" value=\"Submit!\">";
+		data = data + "</p></form>";
 		var dia = window
 			.dialog({
 				title: "www.ingress-maxfield.com: Field your future",
