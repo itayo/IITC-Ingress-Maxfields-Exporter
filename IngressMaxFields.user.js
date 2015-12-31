@@ -94,22 +94,22 @@ function wrapper() {
 
 	self.checkPortals= function checkPortals(portals) {
 		var count=0;
-		var tooMany=false;
-		var list=[];
+		var obj = {
+			list:[],
+			tooMany:false
+			};
 		for (var x in portals) {
-			if (typeof window.portals[x] !== "undefined") {
-				if(count < 50) {
+			if (typeof window.portals[x] !== "undefined" && count < 50) {
                     if(self.inBounds(window.portals[x]))
                     {
                         var str= self.genStr(window.portals[x],x);
-                        list.push(str);
+                        obj.list.push(str);
                         count=count + 1;
                     }
-				}
 			}
 		}
-		tooMany = count < 50?false:true;
-		return { list: list, tooMany : tooMany };
+		obj.tooMany = count < 50?false:true;
+		return obj;
 
 
 	}
