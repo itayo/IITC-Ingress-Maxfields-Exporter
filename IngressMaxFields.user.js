@@ -13,6 +13,8 @@
 // @match http://www.ingress.com/intel*
 // @grant none
 // ==/UserScript==
+/*global $:false */
+/*global map:false */
 function wrapper() {
 	// in case IITC is not available yet, define the base plugin object
 	if (typeof window.plugin !== "function") {
