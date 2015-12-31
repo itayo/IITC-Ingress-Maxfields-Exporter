@@ -2,7 +2,7 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.1.4.0
+// @version 0.1.4.4
 // @namespace http://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
@@ -13,6 +13,8 @@
 // @match http://www.ingress.com/intel*
 // @grant none
 // ==/UserScript==
+/*global $:false */
+/*global map:false */
 function wrapper() {
 	// in case IITC is not available yet, define the base plugin object
 	if (typeof window.plugin !== "function") {
@@ -25,7 +27,7 @@ function wrapper() {
 	// custom dialog wrapper with more flexibility
 	self.tooManyWait = function tooManyWait() {
 		alert("Too many portals found, only listing 50");
-	}
+	};
 	self.sleep = function sleep(milliseconds) {
 		var start = new Date().getTime();
 		for (var i = 0; i < 1e7; i++) {
@@ -33,11 +35,11 @@ function wrapper() {
 				break;
 			}
 		}
-	}
+	};
 
 	self.portalInScreen = function portalInScreen(p) {
-		return map.getBounds().contains(p.getLatLng())
-	}
+		return map.getBounds().contains(p.getLatLng());
+	};
 
 	//  adapted from
 	//+ Jonas Raoni Soares Silva
@@ -50,7 +52,7 @@ function wrapper() {
 			((poly[i].lat <= pt.lat && pt.lat < poly[j].lat) || (poly[j].lat <= pt.lat && pt.lat < poly[i].lat)) && (pt.lng < (poly[j].lng - poly[i].lng) * (pt.lat - poly[i].lat) / (poly[j].lat - poly[i].lat) + poly[i].lng) && (c = !c);
 		}
 		return c;
-	}
+	};
 
 	// return if the portal is within the drawtool objects.
 	// Polygon and circles are available, and circles are implemented
@@ -68,67 +70,80 @@ function wrapper() {
 			}
 		});
 		return c;
+	};
+	self.inBounds = function(portal) {
+		if (window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length) {
+			return self.portalInDrawnItems(portal);
+		} else {
+			return self.portalInScreen(portal);
+		}
+	}
+	self.genStr = function genStr(p,x) {
+		var href = "https://www.ingress.com/intel?ll=" + p._latlng.lat + "," + p._latlng.lng + "&z=17&pll=" + p._latlng.lat + "," + p._latlng.lng;
+		var str = p.options.data.title;
+		str = str.replace(/\"/g, "\\\"");
+		str = str.replace(";"," ");
+		if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
+			var keyCount = window.plugin.keys.keys[x] || 0;
+			str = str + ";" +href +";" + keyCount;
+		} else {
+			str = str + ";" + href;
+		}
+		return str;
+	}
+
+	self.checkPortals= function checkPortals(portals) {
+		var count=0;
+		var obj = {
+			list:[],
+			tooMany:false
+			};
+		for (var x in portals) {
+			if (typeof window.portals[x] !== "undefined" && count < 50) {
+                    if(self.inBounds(window.portals[x]))
+                    {
+                        var str= self.genStr(window.portals[x],x);
+                        obj.list.push(str);
+                        count=count + 1;
+                    }
+			}
+		}
+		obj.tooMany = count < 50?false:true;
+		return obj;
+
+
+	}
+	self.showDialog = function showDialog(o,tooMany)
+	{
+		var data = "<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>";
+		data = data + "<form name=\"maxfield\" action=\"http://ingress-maxfield.com/submit.php\" enctype=\"multipart/form-data\" method=\"post\" target=\"_blank\">";
+		data = data + "<textarea name=\"portal_list_area\" id=\"upload\" rows=\"30\" style=\"width: 100%;\">" + o.join("\n") + "</textarea>";
+		data = data + "<p>Number of agents:<input type=\"number\" class=\"num_agents\" name=\"num_agents\" value=\"1\" min=\"1\" required></p>";
+		data = data + "<p>Use Google maps<input type=\"checkbox\" name=\"useGoogle\" value=\"YES\" checked>";
+		data = data + "<input type=\"hidden\" name=\"email\" placeholder=\"(optional)\"></p><p><input type=\"submit\" class=\"submit\" name=\"submit\" value=\"Submit!\">";
+		data = data + "</p></form>";
+		var dia = window
+			.dialog({
+				title: "www.ingress-maxfield.com: Field your future",
+					html: data
+				}).parent();
+			$(".ui-dialog-buttonpane", dialog).remove();
+			dia.css("width", "600px").css("top",
+				($(window).height() - dia.height()) / 2).css("left",
+				($(window).width() - dia.width()) / 2);
+			if (tooMany) {
+				alert("Too many portals visible, only showing 50!");
+			}
+		return dia;
 	}
 
 	self.gen = function gen() {
-			var o = [];
-			var antal = 0;
-			var tooMany = 0;
+		var o = self.checkPortals(window.portals);
+		var dialog = self.showDialog(o.list,o.tooMany);
+		return dialog;
+	}
 
-			if (window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length) {
-				var inBounds = function(portal) {
-					return self.portalInDrawnItems(portal);
-				}
-				var string = "Portal selection based on drawTools boundaries.";
-			} else {
-				var inBounds = function(portal) {
-					return self.portalInScreen(portal);
-				}
-				var string = "Portal selection based on screen boundaries.";
-			}
-
-			for (var x in window.portals) {
-				var p = window.portals[x];
-				if (antal < 50) {
-					if (inBounds(p)) {
-						antal = antal + 1;
-						var href = 'https://www.ingress.com/intel?ll=' + p._latlng.lat + ',' + p._latlng.lng + '&z=17&pll=' + p._latlng.lat + ',' + p._latlng.lng;
-						var str1 = p.options.data.title.replace(/\"/g, "\\\"");
-						var str2 = str1.replace(';', ' ');
-
-						//check for keys plugin
-						if (window.plugin.keys) {
-							var keyCount = window.plugin.keys.keys[x] || 0;
-							o.push(str2 + ";" + href + ";" + keyCount);
-						} else {
-							o.push(str2 + ";" + href);
-						}
-					}
-				} else {
-					if (tooMany == 0) {
-						tooMany = 1;
-					}
-				}
-			}
-
-			var dialog = window
-				.dialog({
-					title: "www.ingress-maxfield.com: Field your future",
-					// body must be wrapped in an outer tag (e.g.
-					// <div>content</div>)
-					html: '<span>Save the data in a textfile or post it on ingress-maxfields.com. ' + string + '</span>' + '<form name="maxfield" action="http://ingress-maxfield.com/submit.php" enctype="multipart/form-data" method="post" target="_blank_"><textarea name="portal_list_area" id="upload" rows="30" style="width: 100%;"></textarea><p>Number of agents:<input type="number" class="num_agents" name="num_agents" value="1" min="1" required></p><p>Use Google maps<input type="checkbox" name="useGoogle" value="YES" checked><input type="hidden" name="email" placeholder="(optional)"></p><p><input type="submit" class="submit" name="submit" value="Submit!"></p></form>'
-				}).parent();
-			$(".ui-dialog-buttonpane", dialog).remove();
-			dialog.css("width", "600px").css("top",
-				($(window).height() - dialog.height()) / 2).css("left",
-				($(window).width() - dialog.width()) / 2);
-			$("#upload").val(o.join("\n"));
-			if (tooMany == 1) {
-				alert("Too many portals visible, only showing 50!");
-			}
-			return dialog;
-		}
-		// setup function called by IITC
+// setup function called by IITC
 	self.setup = function init() {
 			// add controls to toolbox
 			var link = $("<a onclick=\"window.plugin.ingressmaxfield.gen();\" title=\"Generate a CSV list of portals and locations for use with www.ingress-maxfield.com.\">IMF Export</a>");
@@ -150,3 +165,4 @@ var script = document.createElement("script");
 script.appendChild(document.createTextNode("(" + wrapper + ")();"));
 (document.body || document.head || document.documentElement)
 .appendChild(script);
+
