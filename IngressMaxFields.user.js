@@ -70,7 +70,7 @@ function wrapper() {
 			}
 		});
 		return c;
-	}
+	};
 	self.inBounds = function(portal) {
 		if (window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length) {
 			return self.portalInDrawnItems(portal);
