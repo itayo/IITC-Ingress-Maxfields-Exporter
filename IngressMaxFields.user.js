@@ -70,14 +70,14 @@ function wrapper() {
 			}
 		});
 		return c;
-	}
+	};
 	self.inBounds = function(portal) {
 		if (window.plugin.drawTools && window.plugin.drawTools.drawnItems.getLayers().length) {
 			return self.portalInDrawnItems(portal);
 		} else {
 			return self.portalInScreen(portal);
 		}
-	}
+	};
 	self.genStr = function genStr(p,x) {
 		var href = "https://www.ingress.com/intel?ll=" + p._latlng.lat + "," + p._latlng.lng + "&z=17&pll=" + p._latlng.lat + "," + p._latlng.lng;
 		var str = p.options.data.title;
@@ -90,7 +90,7 @@ function wrapper() {
 			str = str + ";" + href;
 		}
 		return str;
-	}
+	};
 
 	self.checkPortals= function checkPortals(portals) {
 		var count=0;
@@ -112,7 +112,7 @@ function wrapper() {
 		return obj;
 
 
-	}
+	};
 	self.showDialog = function showDialog(o,tooMany)
 	{
 		var data = "<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>";
@@ -135,13 +135,13 @@ function wrapper() {
 				alert("Too many portals visible, only showing 50!");
 			}
 		return dia;
-	}
+	};
 
 	self.gen = function gen() {
 		var o = self.checkPortals(window.portals);
 		var dialog = self.showDialog(o.list,o.tooMany);
 		return dialog;
-	}
+	};
 
 // setup function called by IITC
 	self.setup = function init() {
@@ -150,7 +150,7 @@ function wrapper() {
 			$("#toolbox").append(link);
 			// delete self to ensure init can't be run again
 			delete self.init;
-		}
+		};
 		// IITC plugin setup
 	if (window.iitcLoaded && typeof self.setup === "function") {
 		self.setup();
