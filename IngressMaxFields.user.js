@@ -92,23 +92,32 @@ function wrapper() {
 		return str;
 	};
 
+	self.managePortals = function managePortals(obj,portal,x) {
+		if (obj.count <= 50)
+		{
+			if(self.inBounds(portal))
+			{
+				var str = self.genStr(portal,x);
+				obj.list.push(str);
+				obj.count = obj.count + 1;
+			}
+
+		}
+		return obj;
+
+	};
 	self.checkPortals= function checkPortals(portals) {
-		var count=0;
 		var obj = {
 			list:[],
-			tooMany:false
+			tooMany:false,
+			count:0
 			};
 		for (var x in portals) {
-			if (typeof window.portals[x] !== "undefined" && count < 50) {
-                    if(self.inBounds(window.portals[x]))
-                    {
-                        var str= self.genStr(window.portals[x],x);
-                        obj.list.push(str);
-                        count=count + 1;
-                    }
+			if (typeof window.portals[x] !== "undefined") {
+				self.managePortals(obj,window.portals[x],x);
 			}
 		}
-		obj.tooMany = count < 50?false:true;
+		obj.tooMany = obj.count < 50?false:true;
 		return obj;
 
 
