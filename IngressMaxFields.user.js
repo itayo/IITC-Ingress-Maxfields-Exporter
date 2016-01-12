@@ -15,6 +15,7 @@
 // ==/UserScript==
 /*global $:false */
 /*global map:false */
+/*global L:false */
 function wrapper() {
 	// in case IITC is not available yet, define the base plugin object
 	if (typeof window.plugin !== "function") {
@@ -57,11 +58,21 @@ function wrapper() {
 	// return if the portal is within the drawtool objects.
 	// Polygon and circles are available, and circles are implemented
 	// as round polygons.
+	self.portalInForm = function(layer) {
+		if (layer instanceof L.Rectangle) {
+			return true;
+		}
+		if (layer instanceof L.Circle) {
+			return true;
+		}
+		return false;
+	};
+
 	self.portalInDrawnItems = function(portal) {
 		var c = false;
 
 		window.plugin.drawTools.drawnItems.eachLayer(function(layer) {
-			if (!(layer instanceof L.GeodesicPolygon || layer instanceof L.Rectangle || layer instanceof L.GeodesicCircle || layer instanceof L.Circle)) {
+			if (!( self.portalInForm(layer) || layer instanceof L.GeodesicPolygon || layer instanceof L.GeodesicCircle )) {
 				return false;
 			}
 
