@@ -136,7 +136,7 @@ function wrapper() {
 				title: "www.ingress-maxfield.com: Field your future",
 					html: data
 				}).parent();
-			$(".ui-dialog-buttonpane", dialog).remove();
+			$(".ui-dialog-buttonpane", dia).remove();
 			dia.css("width", "600px").css("top",
 				($(window).height() - dia.height()) / 2).css("left",
 				($(window).width() - dia.width()) / 2);
