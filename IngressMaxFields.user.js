@@ -68,11 +68,21 @@ function wrapper() {
 		return false;
 	};
 
+	self.portalInGeo = function(layer) {
+		if (layer instanceof L.GeodesicPolygon) {
+			return true;
+		}
+		if (layer instanceof L.GeodesicCircle) {
+			return true;
+		}
+		return false;
+	};
+
 	self.portalInDrawnItems = function(portal) {
 		var c = false;
 
 		window.plugin.drawTools.drawnItems.eachLayer(function(layer) {
-			if (!( self.portalInForm(layer) || layer instanceof L.GeodesicPolygon || layer instanceof L.GeodesicCircle )) {
+			if (!( self.portalInForm(layer) || self.portalInGeo(layer) )) {
 				return false;
 			}
 
