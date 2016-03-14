@@ -2,7 +2,7 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.1.5.0
+// @version 0.1.6.0
 // @namespace http://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
@@ -26,9 +26,6 @@ function wrapper() {
     window.plugin.ingressmaxfield = function() {};
     var self = window.plugin.ingressmaxfield;
     // custom dialog wrapper with more flexibility
-    self.tooManyWait = function tooManyWait() {
-        alert("Too many portals found, only listing 50");
-    };
     self.sleep = function sleep(milliseconds) {
         var start = new Date().getTime();
         for (var i = 0; i < 1e7; i++) {
@@ -114,13 +111,10 @@ function wrapper() {
     };
 
     self.managePortals = function managePortals(obj, portal, x) {
-        if (obj.count <= 50) {
-            if (self.inBounds(portal)) {
-                var str = self.genStr(portal, x);
-                obj.list.push(str);
-                obj.count = obj.count + 1;
-            }
-
+        if (self.inBounds(portal)) {
+            var str = self.genStr(portal, x);
+            obj.list.push(str);
+            obj.count = obj.count + 1;
         }
         return obj;
 
@@ -136,7 +130,7 @@ function wrapper() {
                 self.managePortals(obj, window.portals[x], x);
             }
         }
-        obj.tooMany = obj.count < 50 ? false : true;
+        obj.tooMany = false;
         return obj;
 
 
@@ -156,9 +150,6 @@ function wrapper() {
             }).parent();
         $(".ui-dialog-buttonpane", dia).remove();
         dia.css("width", "600px").css("top", ($(window).height() - dia.height()) / 2).css("left", ($(window).width() - dia.width()) / 2);
-        if (tooMany) {
-            alert("Too many portals visible, only showing 50!");
-        }
         return dia;
     };
 
