@@ -122,7 +122,6 @@ function wrapper() {
     self.checkPortals = function checkPortals(portals) {
         var obj = {
             list: [],
-            tooMany: false,
             count: 0
         };
         for (var x in portals) {
@@ -130,17 +129,17 @@ function wrapper() {
                 self.managePortals(obj, window.portals[x], x);
             }
         }
-        obj.tooMany = false;
         return obj;
 
 
     };
-    self.showDialog = function showDialog(o, tooMany) {
+    self.showDialog = function showDialog(o) {
         var data = "<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>";
         data = data + "<form name=\"maxfield\" action=\"http://ingress-maxfield.com/submit.php\" enctype=\"multipart/form-data\" method=\"post\" target=\"_blank\">";
         data = data + "<textarea name=\"portal_list_area\" id=\"upload\" rows=\"30\" style=\"width: 100%;\">" + o.join("\n") + "</textarea>";
         data = data + "<p>Number of agents:<input type=\"number\" class=\"num_agents\" name=\"num_agents\" value=\"1\" min=\"1\" required></p>";
         data = data + "<p>Use Google maps<input type=\"checkbox\" name=\"useGoogle\" value=\"YES\" checked>";
+	data = data + "<input type=\"radio\" name=\"color\" value=\"ENL\" checked>ENL</input><input type=\"radio\" name=\"color\" value=\"RES\" checked=\"checked\">RES</input>";
         data = data + "<input type=\"hidden\" name=\"email\" placeholder=\"(optional)\"></p><p><input type=\"submit\" class=\"submit\" name=\"submit\" value=\"Submit!\">";
         data = data + "</p></form>";
         var dia = window
@@ -155,7 +154,7 @@ function wrapper() {
 
     self.gen = function gen() {
         var o = self.checkPortals(window.portals);
-        var dialog = self.showDialog(o.list, o.tooMany);
+        var dialog = self.showDialog(o.list);
         return dialog;
     };
 
