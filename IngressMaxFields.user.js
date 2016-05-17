@@ -122,7 +122,6 @@ function wrapper() {
     self.checkPortals = function checkPortals(portals) {
         var obj = {
             list: [],
-            tooMany: false,
             count: 0
         };
         for (var x in portals) {
@@ -130,12 +129,11 @@ function wrapper() {
                 self.managePortals(obj, window.portals[x], x);
             }
         }
-        obj.tooMany = false;
         return obj;
 
 
     };
-    self.showDialog = function showDialog(o, tooMany) {
+    self.showDialog = function showDialog(o) {
         var data = "<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>";
         data = data + "<form name=\"maxfield\" action=\"http://ingress-maxfield.com/submit.php\" enctype=\"multipart/form-data\" method=\"post\" target=\"_blank\">";
         data = data + "<textarea name=\"portal_list_area\" id=\"upload\" rows=\"30\" style=\"width: 100%;\">" + o.join("\n") + "</textarea>";
@@ -155,7 +153,7 @@ function wrapper() {
 
     self.gen = function gen() {
         var o = self.checkPortals(window.portals);
-        var dialog = self.showDialog(o.list, o.tooMany);
+        var dialog = self.showDialog(o.list);
         return dialog;
     };
 
