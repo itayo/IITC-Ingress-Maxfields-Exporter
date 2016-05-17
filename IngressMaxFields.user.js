@@ -139,6 +139,7 @@ function wrapper() {
         data = data + "<textarea name=\"portal_list_area\" id=\"upload\" rows=\"30\" style=\"width: 100%;\">" + o.join("\n") + "</textarea>";
         data = data + "<p>Number of agents:<input type=\"number\" class=\"num_agents\" name=\"num_agents\" value=\"1\" min=\"1\" required></p>";
         data = data + "<p>Use Google maps<input type=\"checkbox\" name=\"useGoogle\" value=\"YES\" checked>";
+	data = data + "<input type=\"radio\" name=\"color\" value=\"ENL\" checked>ENL</input><input type=\"radio\" name=\"color\" value=\"RES\" checked=\"checked\">RES</input>";
         data = data + "<input type=\"hidden\" name=\"email\" placeholder=\"(optional)\"></p><p><input type=\"submit\" class=\"submit\" name=\"submit\" value=\"Submit!\">";
         data = data + "</p></form>";
         var dia = window
