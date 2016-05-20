@@ -134,14 +134,41 @@ function wrapper() {
 
     };
     self.showDialog = function showDialog(o) {
-        var data = "<span>Save the data in a textfile or post it on ingress-maxfields.com.</span>";
+/*      var data = "<span>Save the data in a textfile  post it on ingress-maxfields.com.</span>";
         data = data + "<form name=\"maxfield \" action=\"http://ingress-maxfield.com/submit.php\" enctype=\"multipart/form-data\" method=\"post\" target=\"_blank\">";
-        data = data + "<textarea name=\"portal_list_area\" rows=\"30\" style=\"width: 100%;\">" + o.join("\n") + "</textarea>";
-        data = data + "<p>Number of agents:<input type=\"number\" class=\"num_agents\" name=\"num_agents\" value=\"1\" min=\"1\" required></p>";
-        data = data + "<p>Use Google maps<input type=\"checkbox\" name=\"useGoogle\" value=\"YES\" checked>";
-	data = data + "<input type=\"radio\" name=\"color\" value=\"ENL\" checked>ENL</input><input type=\"radio\" name=\"color\" value=\"RES\" checked=\"checked\">RES</input>";
-        data = data + "<input type=\"hidden\" name=\"email\" placeholder=\"(optional)\"></p><p><input type=\"submit\" class=\"submit\" name=\"submit\" value=\"Submit!\">";
+        data = data + "<textarea class='form_area' name='portal_list_area' rows='25' cols='75'>"+ o.join("\n") +"</textarea>";
+        data = data + "<input id='upload' type='hidden' name='portal_list'>"
+        data = data + "<p>Number of agents:<input type='number' class='num_agents' name='num_agents' value='1' min='1' required></p>";
+        data = data + "<p>Use Google maps<input type='checkbox' name='useGoogle' value='YES' checked>";
+	data = data + "<input type='radio' name='color' value='ENL' checked>ENL</input><input type='radio' name='color' value='RES'>RES</input>";
+        data = data + "<input type='hidden' name='email' placeholder='(optional)'></p><p><input type='submit' class='submit' name='submit' value='Submit!'>";
         data = data + "</p></form>";
+*/
+	var data = "";
+	data = data + "<form name='maxfield' action='http://www.ingress-maxfield.com/submit.php' enctype='multipart/form-data' method='post' target=\"_blank\">";
+	data = data + "<div id='form_area'>";
+	data = data + "    <textarea class='form_area' name='portal_list_area' rows='30' cols='70' placeholder='Copy and paste portal list here OR upload portal list 	file below. Proper formatting guidelines can be found in the instructions. Anything after a # is considered a comment and will be ignored - be sure to remove any # or ; that appear in a portal name. Each portal should start on a new line.'>" + o.join("\n") + "</textarea>";
+	data = data + "</div>";
+	data = data + "<div id='form_part2'>";
+	data = data + "<div id='file_upload'>";
+	data = data + "  <br/>";
+	data = data + "  <label class='upload_button' hidden><span><input id='hidden' type='file' name='portal_list'></span></label><input type='hidden' id='path' placeholder='No file selected' disabled>";
+	data = data + "</div>";
+	data = data + "<div id='num_agents'>";
+	data = data + "    <table width='100%'>";
+	data = data + "    <tr><td width='50%'>Number of agents:</td><td width='50%'><input type='number' class='num_agents' name='num_agents' value='1' min='1' required></td></tr>";
+	data = data + "    <tr><td>Use Google Maps?</td><td><input type='checkbox' name='useGoogle' value='YES' checked></td></tr>";
+	data = data + "    <tr><td>Color scheme</td><td><input type='radio' name='color' value='ENL' checked>ENL</input><input type='radio' name='color' value='RES'>RES</input></td></tr>";
+	data = data + "    </table>";
+	data = data + "</div>";
+	data = data + "<div id='submit'>";
+	data = data + "    <table>";
+	data = data + "						<tr><td>Email:</td><td><input type='email' name='email' placeholder='(optional)'></td></tr>";
+	data = data + "    <tr><td></td><td><input type='submit' class='submit' name='submit' value='Submit!'></td></tr>";
+	data = data + "    </table>";
+	data = data + "</div>";
+	data = data + "</div>";
+	data = data + "</form>";
         var dia = window
             .dialog({
                 title: "www.ingress-maxfield.com: Field your future",
