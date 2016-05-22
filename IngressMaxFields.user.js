@@ -110,8 +110,8 @@ function wrapper() {
             }
             return str;
         } else {
-            console.log("unknow portal ", href);
-            return "null";
+            console.log("untitled portal ", href);
+            return "(untitled)";
         }
     };
 
