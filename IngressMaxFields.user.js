@@ -109,7 +109,7 @@ function wrapper() {
                 str = str + ";" + href;
             }
         } else {
-	    var str = "untitled portal;" + href";
+	    var str = "untitled portal;" + href;
         }
         if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
 		var keyCount =window.plugin.keys.keys[x] || 0;
