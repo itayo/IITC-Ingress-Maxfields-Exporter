@@ -98,16 +98,24 @@ function wrapper() {
     };
     self.genStr = function genStr(p, x) {
         var href = "https://www.ingress.com/intel?ll=" + p._latlng.lat + "," + p._latlng.lng + "&z=17&pll=" + p._latlng.lat + "," + p._latlng.lng;
-        var str = p.options.data.title;
-        str = str.replace(/\"/g, "\\\"");
-        str = str.replace(";", " ");
-        if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
-            var keyCount = window.plugin.keys.keys[x] || 0;
-            str = str + ";" + href + ";" + keyCount;
+        if (p.options && p.options.data && p.options.data.title) {
+            var str = p.options.data.title;
+            str = str.replace(/\"/g, "\\\"");
+            str = str.replace(";", " ");
+            if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
+                var keyCount = window.plugin.keys.keys[x] || 0;
+                str = str + ";" + href + ";" + keyCount;
+            } else {
+                str = str + ";" + href;
+            }
         } else {
-            str = str + ";" + href;
+	    var str = "untitled portal;" + href;
         }
-        return str;
+        if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
+		var keyCount =window.plugin.keys.keys[x] || 0;
+		str = str + ";" keyCount;
+	}
+	return str;
     };
 
     self.managePortals = function managePortals(obj, portal, x) {
