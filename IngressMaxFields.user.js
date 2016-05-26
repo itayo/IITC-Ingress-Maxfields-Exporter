@@ -98,22 +98,14 @@ function wrapper() {
     };
     self.genStr = function genStr(p, x) {
         var href = "https://www.ingress.com/intel?ll=" + p._latlng.lat + "," + p._latlng.lng + "&z=17&pll=" + p._latlng.lat + "," + p._latlng.lng;
-        if (p.options && p.options.data && p.options.data.title) {
-            var str = p.options.data.title;
-            str = str.replace(/\"/g, "\\\"");
-            str = str.replace(";", " ");
-            if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
-                var keyCount = window.plugin.keys.keys[x] || 0;
-                str = str + ";" + href + ";" + keyCount;
-            } else {
-                str = str + ";" + href;
-            }
-        } else {
-	    var str = "untitled portal;" + href;
-        }
+	var str= "";
+        str = p.options.data.title || "untitled portal";
+	str = str.replace(/\"/g, "\\\"");
+        str = str.replace(";", " ");
+        str = str + ";" + href;
         if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
 		var keyCount =window.plugin.keys.keys[x] || 0;
-		str = str + ";" keyCount;
+		str = str + ";" + keyCount;
 	}
 	return str;
     };
@@ -142,16 +134,6 @@ function wrapper() {
 
     };
     self.showDialog = function showDialog(o) {
-/*      var data = "<span>Save the data in a textfile  post it on ingress-maxfields.com.</span>";
-        data = data + "<form name=\"maxfield \" action=\"http://ingress-maxfield.com/submit.php\" enctype=\"multipart/form-data\" method=\"post\" target=\"_blank\">";
-        data = data + "<textarea class='form_area' name='portal_list_area' rows='25' cols='75'>"+ o.join("\n") +"</textarea>";
-        data = data + "<input id='upload' type='hidden' name='portal_list'>"
-        data = data + "<p>Number of agents:<input type='number' class='num_agents' name='num_agents' value='1' min='1' required></p>";
-        data = data + "<p>Use Google maps<input type='checkbox' name='useGoogle' value='YES' checked>";
-	data = data + "<input type='radio' name='color' value='ENL' checked>ENL</input><input type='radio' name='color' value='RES'>RES</input>";
-        data = data + "<input type='hidden' name='email' placeholder='(optional)'></p><p><input type='submit' class='submit' name='submit' value='Submit!'>";
-        data = data + "</p></form>";
-*/
 	var data = "";
 	data = data + "<form name='maxfield' action='http://www.ingress-maxfield.com/submit.php' enctype='multipart/form-data' method='post' target=\"_blank\">";
 	data = data + "<div id='form_area'>";
@@ -177,8 +159,7 @@ function wrapper() {
 	data = data + "</div>";
 	data = data + "</div>";
 	data = data + "</form>";
-        var dia = window
-            .dialog({
+        var dia = window.dialog({
                 title: "www.ingress-maxfield.com: Field your future",
                 html: data
             }).parent();
