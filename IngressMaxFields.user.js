@@ -114,7 +114,7 @@ function wrapper() {
         if (self.inBounds(portal)) {
             var str = self.genStr(portal, x);
             obj.list.push(str);
-            obj.count = obj.count + 1;
+            obj.count += 1;
         }
         return obj;
 
@@ -135,30 +135,30 @@ function wrapper() {
     };
     self.showDialog = function showDialog(o) {
 	var data = "";
-	data = data + "<form name='maxfield' action='http://www.ingress-maxfield.com/submit.php' enctype='multipart/form-data' method='post' target=\"_blank\">";
-	data = data + "<div id='form_area'>";
-	data = data + "    <textarea class='form_area' name='portal_list_area' rows='30' cols='70' placeholder='Copy and paste portal list here OR upload portal list 	file below. Proper formatting guidelines can be found in the instructions. Anything after a # is considered a comment and will be ignored - be sure to remove any # or ; that appear in a portal name. Each portal should start on a new line.'>" + o.join("\n") + "</textarea>";
-	data = data + "</div>";
-	data = data + "<div id='form_part2'>";
-	data = data + "<div id='file_upload'>";
-	data = data + "  <br/>";
-	data = data + "  <label class='upload_button' hidden><span><input id='hidden' type='file' name='portal_list'></span></label><input type='hidden' id='path' placeholder='No file selected' disabled>";
-	data = data + "</div>";
-	data = data + "<div id='num_agents'>";
-	data = data + "    <table width='100%'>";
-	data = data + "    <tr><td width='50%'>Number of agents:</td><td width='50%'><input type='number' class='num_agents' name='num_agents' value='1' min='1' required></td></tr>";
-	data = data + "    <tr><td>Use Google Maps?</td><td><input type='checkbox' name='useGoogle' value='YES' checked></td></tr>";
-	data = data + "    <tr><td>Color scheme</td><td><input type='radio' name='color' value='ENL' checked>ENL</input><input type='radio' name='color' value='RES'>RES</input></td></tr>";
-	data = data + "    </table>";
-	data = data + "</div>";
-	data = data + "<div id='submit'>";
-	data = data + "    <table>";
-	data = data + "						<tr><td>Email:</td><td><input type='email' name='email' placeholder='(optional)'></td></tr>";
-	data = data + "    <tr><td></td><td><input type='submit' class='submit' name='submit' value='Submit!'></td></tr>";
-	data = data + "    </table>";
-	data = data + "</div>";
-	data = data + "</div>";
-	data = data + "</form>";
+	data += "<form name='maxfield' action='http://www.ingress-maxfield.com/submit.php' enctype='multipart/form-data' method='post' target=\"_blank\">";
+	data += "<div id='form_area'>";
+	data += "    <textarea class='form_area' name='portal_list_area' rows='30' cols='70' placeholder='Copy and paste portal list here OR upload portal list 	file below. Proper formatting guidelines can be found in the instructions. Anything after a # is considered a comment and will be ignored - be sure to remove any # or ; that appear in a portal name. Each portal should start on a new line.'>" + o.join("\n") + "</textarea>";
+	data += "</div>";
+	data += "<div id='form_part2'>";
+	data += "<div id='file_upload'>";
+	data += "  <br/>";
+	data += "  <label class='upload_button' hidden><span><input id='hidden' type='file' name='portal_list'></span></label><input type='hidden' id='path' placeholder='No file selected' disabled>";
+	data += "</div>";
+	data += "<div id='num_agents'>";
+	data += "    <table width='100%'>";
+	data += "    <tr><td width='50%'>Number of agents:</td><td width='50%'><input type='number' class='num_agents' name='num_agents' value='1' min='1' required></td></tr>";
+	data += "    <tr><td>Use Google Maps?</td><td><input type='checkbox' name='useGoogle' value='YES' checked></td></tr>";
+	data += "    <tr><td>Color scheme</td><td><input type='radio' name='color' value='ENL' checked>ENL</input><input type='radio' name='color' value='RES'>RES</input></td></tr>";
+	data += "    </table>";
+	data += "</div>";
+	data += "<div id='submit'>";
+	data += "    <table>";
+	data += "						<tr><td>Email:</td><td><input type='email' name='email' placeholder='(optional)'></td></tr>";
+	data += "    <tr><td></td><td><input type='submit' class='submit' name='submit' value='Submit!'></td></tr>";
+	data += "    </table>";
+	data += "</div>";
+	data += "</div>";
+	data += "</form>";
         var dia = window.dialog({
                 title: "www.ingress-maxfield.com: Field your future",
                 html: data
