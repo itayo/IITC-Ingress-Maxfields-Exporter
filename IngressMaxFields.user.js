@@ -25,7 +25,7 @@ function wrapper() {
 
     window.plugin.ingressmaxfield = function() {};
     var self = window.plugin.ingressmaxfield;
-    // custom dialog wrapper with more flexibility
+
     self.sleep = function sleep(milliseconds) {
         var start = new Date().getTime();
         for (var i = 0; i < 1e7; i++) {
