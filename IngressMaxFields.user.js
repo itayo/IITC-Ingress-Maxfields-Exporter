@@ -21,8 +21,8 @@ function wrapper() {
     if (typeof window.plugin !== "function") {
         window.plugin = function() {};
     }
-    // base context for plugin
 
+    // base context for plugin
     window.plugin.ingressmaxfield = function() {};
     var self = window.plugin.ingressmaxfield;
 
