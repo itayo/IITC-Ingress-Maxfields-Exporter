@@ -26,15 +26,6 @@ function wrapper() {
     window.plugin.ingressmaxfield = function() {};
     var self = window.plugin.ingressmaxfield;
 
-    self.sleep = function sleep(milliseconds) {
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds) {
-                break;
-            }
-        }
-    };
-
     self.portalInScreen = function portalInScreen(p) {
         return map.getBounds().contains(p.getLatLng());
     };
