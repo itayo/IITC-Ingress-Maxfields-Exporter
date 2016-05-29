@@ -87,23 +87,31 @@ function wrapper() {
             return self.portalInScreen(portal);
         }
     };
-    self.genStr = function genStr(p, x) {
-        var href = "https://www.ingress.com/intel?ll=" + p._latlng.lat + "," + p._latlng.lng + "&z=17&pll=" + p._latlng.lat + "," + p._latlng.lng;
+    self.genStr = function genStr(title, lat, lng, portalGuid) {
+        var href = "https://www.ingress.com/intel?ll=" + lat + "," + lng + "&z=17&pll=" + lat + "," + lng;
         var str= "";
-        str = p.options.data.title || "untitled portal";
+        str = title;
         str = str.replace(/\"/g, "\\\"");
         str = str.replace(";", " ");
         str = str + ";" + href;
-        if (window.plugin.keys && (typeof window.portals[x] !== "undefined")) {
-            var keyCount =window.plugin.keys.keys[x] || 0;
+        if (window.plugin.keys && (typeof window.portals[portalGuid] !== "undefined")) {
+            var keyCount =window.plugin.keys.keys[portalGuid] || 0;
             str = str + ";" + keyCount;
         }
         return str;
     };
 
+    self.genStrFromPortal = function genStrFromPortal(portal, portalGuid) {
+        var lat = portal._latlng.lat,
+            lng = portal._latlng.lng,
+            title = portal.options.data.title || "untitled portal";
+
+        return self.genStr(title, lat, lng, portalGuid);
+    };
+
     self.managePortals = function managePortals(obj, portal, x) {
         if (self.inBounds(portal)) {
-            var str = self.genStr(portal, x);
+            var str = self.genStrFromPortal(portal, x);
             obj.list.push(str);
             obj.count += 1;
         }
