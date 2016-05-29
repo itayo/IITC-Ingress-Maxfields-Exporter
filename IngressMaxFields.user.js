@@ -132,31 +132,123 @@ function wrapper() {
 
 
     };
-    self.showDialog = function showDialog(o) {
+
+    // Return markup for the bookmarks to show in the IMF dialog
+    self.renderPortalBookmarkFolders = function renderPortalBookmarkFolder(folders) {
+        var data = "<p>With Portal Bookmarks, you can populate the list with a folder you have created instead:</p>";
+
+        for (var folder in folders) {
+            if (folders.hasOwnProperty(folder)) {
+                data += `<div onClick='window.plugin.ingressmaxfield.appendBookmarkFolder("${folder}");'>${folders[folder]}</div>`;
+            }
+        }
+
+        return data;
+    };
+
+    // Generate string for given bookmarked portal
+    self.genStrFromBookmarkPortal = function genStrFromBookmarkPortal(portalId, folder) {
+        var portalsList = JSON.parse(localStorage["plugin-bookmarks"]);
+        var portal = portalsList.portals[folder]["bkmrk"][portalId];
+        var latlng = portal.latlng.split(",");
+
+        return self.genStr(portal.label, latlng[0], latlng[1], portal.guid);
+    };
+
+    // Generate string for all the portals
+    self.genStrFromBookmarkFolder = function genStrFromBookmarkFolder(folder) {
+        var data = "",
+            portalsList = JSON.parse(localStorage["plugin-bookmarks"]);
+
+        for (var portal in portalsList.portals[folder]["bkmrk"]) {
+            if (portalsList.portals[folder]["bkmrk"].hasOwnProperty(portal)) {
+                data += self.genStrFromBookmarkPortal(portal, folder) + "\n";
+            }
+        }
+
+        return data;
+    };
+
+
+    // Write a list of all portal bookmarks to the text area
+    self.appendBookmarkFolder = function appendBookmarkFolder(folder) {
+        var $form = $("form[name='maxfield'] textarea");
+        $form.val(self.genStrFromBookmarkFolder(folder));
+    };
+
+    self.showDialog = function showDialog(o, b) {
         var data = `
         <form name='maxfield' action='http://www.ingress-maxfield.com/submit.php' enctype='multipart/form-data' method='post' target='_blank'>
-        <div id='form_area'>
-            <textarea class='form_area' name='portal_list_area' rows='30' cols='70' placeholder='Copy and paste portal list here OR upload portal list 	file below. Proper formatting guidelines can be found in the instructions. Anything after a # is considered a comment and will be ignored - be sure to remove any # or ; that appear in a portal name. Each portal should start on a new line.'>${o.join("\n")}</textarea>
-        </div>
-        <div id='form_part2'>
-        <div id='file_upload'>
-          <br/>
-          <label class='upload_button' hidden><span><input id='hidden' type='file' name='portal_list'></span></label><input type='hidden' id='path' placeholder='No file selected' disabled>
-        </div>
-        <div id='num_agents'>
-            <table width='100%'>
-            <tr><td width='50%'>Number of agents:</td><td width='50%'><input type='number' class='num_agents' name='num_agents' value='1' min='1' required></td></tr>
-            <tr><td>Use Google Maps?</td><td><input type='checkbox' name='useGoogle' value='YES' checked></td></tr>
-            <tr><td>Color scheme</td><td><input type='radio' name='color' value='ENL' checked>ENL</input><input type='radio' name='color' value='RES'>RES</input></td></tr>
-            </table>
-        </div>
-        <div id='submit'>
-            <table>
-                <tr><td>Email:</td><td><input type='email' name='email' placeholder='(optional)'></td></tr>
-                <tr><td></td><td><input type='submit' class='submit' name='submit' value='Submit!'></td></tr>
-            </table>
-        </div>
-        </div>
+            <div class="row">
+                <div id='form_area' class="column" style="float:left;width:80%;box-sizing: border-box;padding-right: 10px;">
+                    <textarea class='form_area'
+                        name='portal_list_area'
+                        rows='30'
+                        placeholder='Copy and paste portal list here OR upload portal list file below. Proper formatting guidelines can be found in the instructions.  Anything after a # is considered a comment and will be ignored - be sure to remove any # or ; that appear in a portal name. Each portal should start on a new line.'
+                        style="width: 100%; white-space: nowrap;">${o.join("\n")}</textarea>
+                </div>
+                <div class="column" style="float:left;width:20%;">
+                    ${self.renderPortalBookmarkFolders(b)}
+                </div>
+            </div>
+            <div id='form_part2'>
+                <div id='file_upload'>
+                    <br/>
+                    <label class='upload_button' hidden>
+                        <span>
+                            <input id='hidden' type='file' name='portal_list'>
+                        </span>
+                    </label>
+                    <input type='hidden' id='path' placeholder='No file selected' disabled>
+                </div>
+                <div id='num_agents'>
+                    <table width='100%'>
+                        <tr>
+                            <td width='50%'>
+                                Number of agents:
+                            </td>
+                            <td width='50%'>
+                                <input type='number' class='num_agents' name='num_agents' value='1' min='1' required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Use Google Maps?
+                            </td>
+                            <td>
+                                <input type='checkbox' name='useGoogle' value='YES' checked>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Color scheme
+                            </td>
+                            <td>
+                                <input type='radio' name='color' value='ENL' checked>ENL</input>
+                                <input type='radio' name='color' value='RES'>RES</input>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='submit'>
+                    <table>
+                        <tr>
+                            <td>
+                                Email:
+                            </td>
+                            <td>
+                                <input type='email' name='email' placeholder='(optional)'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type='submit' class='submit' name='submit' value='Submit!'>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </form>
         `;
         var dia = window.dialog({
@@ -170,8 +262,26 @@ function wrapper() {
 
     self.gen = function gen() {
         var o = self.checkPortals(window.portals);
-        var dialog = self.showDialog(o.list);
+        var bookmarks = self.checkBookmarks();
+        var dialog = self.showDialog(o.list, bookmarks);
         return dialog;
+    };
+
+    // Return a list of portal bookmark folders
+    self.checkBookmarks = function checkBookmarks() {
+        if (!window.plugin.bookmarks) {
+            return null;
+        }
+
+        var portalsList = JSON.parse(localStorage["plugin-bookmarks"]);
+
+        var res = {};
+        for (var folder in portalsList.portals) {
+            if (portalsList.portals.hasOwnProperty(folder)) {
+                res[folder] = portalsList.portals[folder].label;
+            }
+        }
+        return res;
     };
 
     // setup function called by IITC
