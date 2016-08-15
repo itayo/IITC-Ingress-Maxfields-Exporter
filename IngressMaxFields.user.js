@@ -51,6 +51,7 @@ function wrapper() {
             return true;
         }
         if (layer instanceof L.Circle) {
+ 	    var unused;
             return true;
         }
         return false;
