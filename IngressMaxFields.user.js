@@ -139,7 +139,11 @@ function wrapper() {
 
         for (var folder in folders) {
             if (folders.hasOwnProperty(folder)) {
-                data += `<div onClick='window.plugin.ingressmaxfield.appendBookmarkFolder("${folder}");'>${folders[folder]}</div>`;
+                data += `<div
+                  style="text-align: center; border: yellow 1px solid; margin-bottom: 0.3em; cursor: pointer;"
+                  onClick='window.plugin.ingressmaxfield.appendBookmarkFolder("${folder}");'>
+                    ${folders[folder]}
+                  </div>`;
             }
         }
 
