@@ -7,10 +7,14 @@
 // @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @description Exports portals in the format for http://www.ingress-maxfield.com/ and allow direct transfer to site
-// @include https://www.ingress.com/intel*
-// @include http://www.ingress.com/intel*
-// @match https://www.ingress.com/intel*
-// @match http://www.ingress.com/intel*
+// @include        https://*.ingress.com/intel*
+// @include        http://*.ingress.com/intel*
+// @match          https://*.ingress.com/intel*
+// @match          http://*.ingress.com/intel*
+// @include        https://*.ingress.com/mission/*
+// @include        http://*.ingress.com/mission/*
+// @match          https://*.ingress.com/mission/*
+// @match          http://*.ingress.com/mission/*
 // @grant none
 // ==/UserScript==
 /*global $:false */
@@ -139,7 +143,11 @@ function wrapper() {
 
         for (var folder in folders) {
             if (folders.hasOwnProperty(folder)) {
-                data += `<div onClick='window.plugin.ingressmaxfield.appendBookmarkFolder("${folder}");'>${folders[folder]}</div>`;
+                data += `<div
+                  style="text-align: center; border: yellow 1px solid; margin-bottom: 0.3em; cursor: pointer;"
+                  onClick='window.plugin.ingressmaxfield.appendBookmarkFolder("${folder}");'>
+                    ${folders[folder]}
+                  </div>`;
             }
         }
 
