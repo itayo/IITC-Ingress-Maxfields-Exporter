@@ -186,7 +186,7 @@ function wrapper() {
 
     self.showDialog = function showDialog(o, b) {
         var data = `
-        <form name='maxfield' action='http://www.ingress-maxfield.com/submit.php' enctype='multipart/form-data' method='post' target='_blank'>
+        <form name='maxfield' action='https://www.ingress-maxfield.com/submit.php' enctype='multipart/form-data' method='post' target='_blank'>
             <div class="row">
                 <div id='form_area' class="column" style="float:left;width:80%;box-sizing: border-box;padding-right: 10px;">
                     <textarea class='form_area'
