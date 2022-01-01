@@ -7,14 +7,8 @@
 // @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @description Exports portals in the format for http://www.ingress-maxfield.com/ and allow direct transfer to site
-// @include        https://*.ingress.com/intel*
-// @include        http://*.ingress.com/intel*
-// @match          https://*.ingress.com/intel*
-// @match          http://*.ingress.com/intel*
-// @include        https://*.ingress.com/mission/*
-// @include        http://*.ingress.com/mission/*
-// @match          https://*.ingress.com/mission/*
-// @match          http://*.ingress.com/mission/*
+// @include		https://intel.ingress.com/*
+// @match		https://intel.ingress.com/*
 // @grant none
 // ==/UserScript==
 /*global $:false */
@@ -91,15 +85,25 @@ function wrapper() {
             return self.portalInScreen(portal);
         }
     };
+  
     self.genStr = function genStr(title, lat, lng, portalGuid) {
         var href = "https://www.ingress.com/intel?ll=" + lat + "," + lng + "&z=17&pll=" + lat + "," + lng;
-        var str= "";
+        var str = "";
+        var keyCount = 0;
+
         str = title;
         str = str.replace(/\"/g, "\\\"");
         str = str.replace(";", " ");
         str = str + ";" + href;
-        if (window.plugin.keys && (typeof window.portals[portalGuid] !== "undefined")) {
-            var keyCount =window.plugin.keys.keys[portalGuid] || 0;
+
+        if (typeof window.portals[portalGuid] !== "undefined") {
+
+            if (window.plugin.keys) {
+                keyCount = window.plugin.keys.keys[portalGuid] || 0;
+
+            } else if (window.plugin.LiveInventory && typeof window.plugin.LiveInventory.keyMap[portalGuid] !== "undefined") {
+                keyCount = window.plugin.LiveInventory.keyMap[portalGuid].count;
+            }
             str = str + ";" + keyCount;
         }
         return str;
