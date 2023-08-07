@@ -2,7 +2,7 @@
 // @id iitc-plugin-ingressmaxfield@stenyg
 // @name IITC plugin: Ingress Maxfields
 // @category Information
-// @version 0.1.9.0
+// @version 0.2.0.0
 // @namespace http://github.com/jonatkins/ingress-intel-total-conversion
 // @updateURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
 // @downloadURL http://github.com/itayo/IITC-Ingress-Maxfields-Exporter/raw/master/IngressMaxFields.user.js
@@ -112,7 +112,7 @@ function wrapper() {
     self.genStrFromPortal = function genStrFromPortal(portal, portalGuid) {
         var lat = portal._latlng.lat,
             lng = portal._latlng.lng,
-            title = portal.options.data.title || "untitled portal";
+            title = portal.options.data.title || portal.label || "untitled portal";
 
         return self.genStr(title, lat, lng, portalGuid);
     };
